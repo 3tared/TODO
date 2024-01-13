@@ -8,3 +8,9 @@ export interface IFormInputs {
     minLength?: number;
   };
 }
+
+export interface IAxiosErrorMessage {
+  error: {
+    message?: string;
+  };
+}
