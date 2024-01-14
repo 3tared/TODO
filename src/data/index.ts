@@ -1,4 +1,4 @@
-import { IFormInputs } from '../interfaces';
+import { IFormInputs, IFormLoginInputs } from '../interfaces';
 
 export const REGISTER_FORM: IFormInputs[] = [
   {
@@ -22,7 +22,29 @@ export const REGISTER_FORM: IFormInputs[] = [
   },
   {
     name: 'password',
-    type: 'text',
+    type: 'password',
+    placeholder: 'Type Your Password',
+    validation: {
+      required: true,
+      minLength: 6,
+    },
+  },
+];
+
+export const LOGIN_FORM: IFormLoginInputs[] = [
+  {
+    name: 'identifier',
+    type: 'email',
+    placeholder: 'Type Your Email',
+    validation: {
+      required: true,
+      pattern:
+        /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
+    },
+  },
+  {
+    name: 'password',
+    type: 'password',
     placeholder: 'Type Your Password',
     validation: {
       required: true,
