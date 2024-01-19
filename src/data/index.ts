@@ -52,3 +52,9 @@ export const LOGIN_FORM: IFormLoginInputs[] = [
     },
   },
 ];
+
+export interface ITodo {
+  id: number;
+  title: string;
+  description: string;
+}

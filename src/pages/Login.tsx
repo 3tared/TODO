@@ -10,6 +10,7 @@ import { IAxiosErrorMessage } from '../interfaces';
 import toast from 'react-hot-toast';
 import axiosInstance from '../config/axios.config';
 import { LoginSchema } from '../validation';
+import { Link } from 'react-router-dom';
 
 interface IFormLoginInput {
   identifier: string;
@@ -30,14 +31,17 @@ const LoginPage = () => {
   const onSubmit: SubmitHandler<IFormLoginInput> = async (data) => {
     setLoading(true);
     try {
-      const { status } = await axiosInstance.post('/auth/local', data);
+      const { status, data: userData } = await axiosInstance.post(
+        '/auth/local',
+        data
+      );
 
       if (status == 200) {
         toast.success(
-          'Awesome! You Will Navigate To Home Page After 4 Seconds',
+          'Awesome! You Will Navigate To Home Page After 2 Seconds',
           {
             position: 'bottom-center',
-            duration: 4000,
+            duration: 1500,
             style: {
               border: '1px solid #4338CA',
               padding: '16px',
@@ -50,12 +54,18 @@ const LoginPage = () => {
             },
           }
         );
+
+        localStorage.setItem('loggedInUserData', JSON.stringify(userData));
+
+        setTimeout(() => {
+          location.replace('/');
+        }, 2000);
       }
     } catch (error) {
       const errorObj = error as AxiosError<IAxiosErrorMessage>;
       toast.error(`${errorObj?.response?.data?.error?.message}`, {
         position: 'bottom-center',
-        duration: 4000,
+        duration: 1500,
         style: {
           border: '1px solid #000000',
           padding: '16px',
@@ -95,6 +105,15 @@ const LoginPage = () => {
         <Button fullWidth isLoading={loading}>
           Login
         </Button>
+        <p className="text-center text-sm text-gray-500 space-x-2">
+          <span>Don't Have An Account?</span>
+          <Link
+            to={'/register'}
+            className="text-indigo-600 underline font-semibold"
+          >
+            Register
+          </Link>
+        </p>
       </form>
     </div>
   );
