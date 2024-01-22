@@ -59,3 +59,7 @@ export interface ITodo {
   description: string;
   createdAt?: string;
 }
+export interface IAddTodo {
+  title: string;
+  description: string;
+}

@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router-dom';
+import Button from './ui/Button';
 
 const Navbar = () => {
   const userKey = 'loggedInUserData';
@@ -14,11 +15,12 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="max-w-lg mx-auto mt-7 mb-20 bg-indigo-600 px-3 py-5 rounded-md">
+    <nav className="mx-3 max-w-3xl md:mx-auto mt-7 mb-20 bg-indigo-600 px-3 py-5 rounded-md">
       <ul className="flex items-center justify-between">
         <li className="text-white duration-200 font-semibold text-lg">
           <NavLink to="/">Home</NavLink>
         </li>
+
         {!userData ? (
           <p className="flex items-center space-x-3">
             <li className="text-white duration-200 font-semibold text-lg">
@@ -29,7 +31,7 @@ const Navbar = () => {
             </li>
           </p>
         ) : (
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-4">
             <li>
               <NavLink
                 className="text-white duration-200 font-semibold text-lg"
@@ -38,12 +40,12 @@ const Navbar = () => {
                 Profile
               </NavLink>
             </li>
-            <span
-              className="cursor-pointer text-white duration-200 font-semibold text-lg"
+            <Button
+              className=" text-black duration-200 font-semibold text-lg bg-white py-1"
               onClick={onSubmitHandler}
             >
               Logout
-            </span>
+            </Button>
           </div>
         )}
       </ul>
