@@ -63,3 +63,12 @@ export interface IAddTodo {
   title: string;
   description: string;
 }
+
+export interface ITodoData {
+  todos: {
+    id: number;
+    title: string;
+    description: string;
+    createdAt?: string;
+  };
+}

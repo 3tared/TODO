@@ -55,11 +55,11 @@ export const TodoSchema = ({ title, description }: ISchema) => {
   }
   if (
     !description.trim() ||
-    description.length < 20 ||
+    description.length < 15 ||
     description.length > 500
   ) {
     errors.description =
-      'Todo Description Must Be Between 30 & 500 Characters!';
+      'Todo Description Must Be Between 15 & 500 Characters!';
   }
 
   return errors;

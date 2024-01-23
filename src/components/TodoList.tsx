@@ -39,6 +39,7 @@ const TodoList = () => {
   const [isUpdating, setIsUpdating] = useState(false);
   const [errors, setErrors] = useState(defaultErrorsObj);
   const [queryKey, setQueryKey] = useState(1);
+
   // Handlers
 
   //Edit Hanlder
@@ -80,8 +81,8 @@ const TodoList = () => {
         },
       });
       if (status === 200) {
-        onCloseReomveModal();
         setQueryKey((prev) => prev + 1);
+        onCloseReomveModal();
       }
     } catch (error) {
       console.log(error);
@@ -176,7 +177,7 @@ const TodoList = () => {
 
       const { status } = await axiosInstance.post(
         `/todos`,
-        { data: { title, description } },
+        { data: { title, description, user: [userData.user.id] } },
         {
           headers: {
             Authorization: `Bearer ${userData.jwt}`,
@@ -193,6 +194,7 @@ const TodoList = () => {
       setIsUpdating(false);
     }
   };
+
   // Fetching Data By Using React Query [by Our Custom Hook]
   const { data, isLoading } = useAuthenticatedQuery({
     queryKey: ['todoList', `${queryKey}`],
@@ -207,6 +209,18 @@ const TodoList = () => {
   if (isLoading)
     return (
       <div>
+        <div role="status" className="p-3 space-y-2   animate-pulse mb-16">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <div className="w-[110px] h-3 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+            </div>
+            <div className="flex items-center space-x-1">
+              <div className="h-9 bg-gray-300 rounded-md dark:bg-gray-700 w-[127.88px]"></div>
+              <div className="h-9 bg-gray-300 rounded-md dark:bg-gray-700 w-[125.08px]"></div>
+            </div>
+          </div>
+        </div>
+
         {Array.from({ length: 3 }, (_, idx) => (
           <TodoSkeleton key={idx} />
         ))}
@@ -243,9 +257,12 @@ const TodoList = () => {
         <p className="text-[23px] font-semibold ">
           Your <span className="text-indigo-700 ml-[-5px]">Todos</span>
         </p>
-        <Button size={'sm'} onClick={onOpenAddModal}>
-          Add New ToDo
-        </Button>
+        <div className="flex items center space-x-1">
+          <Button size={'sm'} onClick={onOpenAddModal}>
+            Add New ToDo
+          </Button>
+          <Button size={'sm'}>Generate Todo</Button>
+        </div>
       </div>
 
       {data.todos[0] ? renderTodosList : <h3>You Don't Have Todos Yet!</h3>}
@@ -344,7 +361,7 @@ const TodoList = () => {
           <Button variant={'danger'} onClick={onRemoveHandler}>
             Yes , Remove
           </Button>
-          <Button variant={'cancel'} onClick={onCloseReomveModal}>
+          <Button variant={'cancel'} onClick={onCloseReomveModal} type="button">
             Cancel
           </Button>
         </div>
