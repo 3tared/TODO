@@ -10,7 +10,7 @@ import useAuthenticatedQuery from '../hooks/useAuthenticatedQuery';
 import { useState } from 'react';
 
 import axiosInstance from '../config/axios.config';
-import { faker } from '@faker-js/faker';
+
 import toast from 'react-hot-toast';
 
 const userKey = 'loggedInUserData';
@@ -199,31 +199,6 @@ const TodoList = () => {
     }
   };
 
-  // Generate Handler
-  const onGenerateTodo = async () => {
-    try {
-      for (let i = 0; i < 100; i++) {
-        await axiosInstance.post(
-          `/todos`,
-          {
-            data: {
-              title: faker.lorem.words(5),
-              description: faker.lorem.paragraph(2),
-              user: [userData.user.id],
-            },
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${userData.jwt}`,
-            },
-          }
-        );
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   // Fetching Data By Using React Query [by Our Custom Hook]
   const { data, isLoading } = useAuthenticatedQuery({
     queryKey: ['todoList', `${queryKey}`],
@@ -289,9 +264,6 @@ const TodoList = () => {
         <div className="flex items center space-x-1">
           <Button size={'sm'} onClick={onOpenAddModal}>
             Add New ToDo
-          </Button>
-          <Button size={'sm'} variant={'outline'} onClick={onGenerateTodo}>
-            Generate Todo
           </Button>
         </div>
       </div>
