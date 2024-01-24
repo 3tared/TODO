@@ -11,7 +11,7 @@ import HomePage from '../pages';
 import LoginPage from '../pages/Login';
 import RegisterPage from '../pages/Register';
 
-import TodosPage from '../pages/Todos';
+// import TodosPage from '../pages/Todos';
 
 const userKey = 'loggedInUserData';
 const userDataString = localStorage.getItem(userKey);
@@ -46,7 +46,7 @@ const router = createBrowserRouter(
             </ProtectedRoute>
           }
         />
-        <Route
+        {/* <Route
           path="todos"
           element={
             <ProtectedRoute
@@ -57,7 +57,7 @@ const router = createBrowserRouter(
               <TodosPage />
             </ProtectedRoute>
           }
-        />
+        /> */}
         <Route
           path="login"
           element={

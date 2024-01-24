@@ -38,7 +38,6 @@ const TodosPage = () => {
       },
     },
   });
-  console.log(data);
 
   if (isLoading)
     return (
