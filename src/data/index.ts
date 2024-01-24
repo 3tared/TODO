@@ -72,3 +72,11 @@ export interface ITodoData {
     createdAt?: string;
   };
 }
+export interface ITodoPagintaion {
+  attributes: {
+    title: string;
+    description?: string;
+    createdAt?: string;
+  };
+  id: number;
+}

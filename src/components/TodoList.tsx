@@ -1,14 +1,17 @@
 import Button from './ui/Button';
-
-import useAuthenticatedQuery from '../hooks/useAuthenticatedQuery';
 import Modal from './ui/Modal';
-import { useState } from 'react';
 import Input from './ui/Input';
 import { IAddTodo, ITodo } from '../data';
 import Textarea from './ui/Textarea';
-import axiosInstance from '../config/axios.config';
 import { TodoSchema } from '../validation';
 import TodoSkeleton from './TodoSkeleton';
+
+import useAuthenticatedQuery from '../hooks/useAuthenticatedQuery';
+import { useState } from 'react';
+
+import axiosInstance from '../config/axios.config';
+import { faker } from '@faker-js/faker';
+import toast from 'react-hot-toast';
 
 const userKey = 'loggedInUserData';
 const userDataString = localStorage.getItem(userKey);
@@ -53,43 +56,8 @@ const TodoList = () => {
     setTodoToEdit(defaultTodoObj);
     setIsOpen(false);
   };
-
-  //Remove Hanlder
-  const onOpenRemoveModal = (todo: ITodo) => {
-    setTodoToEdit(todo);
-    setIsRemoveOpen(true);
-  };
-  const onCloseReomveModal = () => {
-    setTodoToEdit(defaultTodoObj);
-    setIsRemoveOpen(false);
-  };
-
-  //Add Hanlder
-  const onOpenAddModal = () => {
-    setIsAddOpen(true);
-  };
-  const onCloseAddModal = () => {
-    setTodoToAdd(defaultAddTodoObj);
-    setIsAddOpen(false);
-  };
-
-  const onRemoveHandler = async () => {
-    try {
-      const { status } = await axiosInstance.delete(`/todos/${todoToEdit.id}`, {
-        headers: {
-          Authorization: `Bearer ${userData.jwt}`,
-        },
-      });
-      if (status === 200) {
-        setQueryKey((prev) => prev + 1);
-        onCloseReomveModal();
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const onChangeHandler = (
+  // Edit onChange
+  const onChangeEditHandler = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
@@ -102,22 +70,8 @@ const TodoList = () => {
       [name]: '',
     });
   };
-
-  const onChangeAddHandler = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setTodoToAdd({
-      ...todoToAdd,
-      [name]: value,
-    });
-    setErrors({
-      ...errors,
-      [name]: '',
-    });
-  };
-
-  const onSubmitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
+  // Edit Submit
+  const onSubmitEditHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsUpdating(true);
     const { id, title, description } = todoToEdit;
@@ -147,6 +101,7 @@ const TodoList = () => {
       );
       if (status === 200) {
         onCloseEditModal();
+        toast.success('Edit Successfully!');
         setQueryKey((prev) => prev + 1);
       }
     } catch (error) {
@@ -155,7 +110,55 @@ const TodoList = () => {
       setIsUpdating(false);
     }
   };
-
+  //Remove Hanlder
+  const onOpenRemoveModal = (todo: ITodo) => {
+    setTodoToEdit(todo);
+    setIsRemoveOpen(true);
+  };
+  const onCloseReomveModal = () => {
+    setTodoToEdit(defaultTodoObj);
+    setIsRemoveOpen(false);
+  };
+  // Remove Submit
+  const onRemoveHandler = async () => {
+    try {
+      const { status } = await axiosInstance.delete(`/todos/${todoToEdit.id}`, {
+        headers: {
+          Authorization: `Bearer ${userData.jwt}`,
+        },
+      });
+      if (status === 200) {
+        setQueryKey((prev) => prev + 1);
+        onCloseReomveModal();
+        toast.success('Deleted Successfully!');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  //Add Hanlder
+  const onOpenAddModal = () => {
+    setIsAddOpen(true);
+  };
+  const onCloseAddModal = () => {
+    setTodoToAdd(defaultAddTodoObj);
+    setIsAddOpen(false);
+  };
+  // Add onChange
+  const onChangeAddHandler = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setTodoToAdd({
+      ...todoToAdd,
+      [name]: value,
+    });
+    setErrors({
+      ...errors,
+      [name]: '',
+    });
+  };
+  // Add Submit
   const onSubmitAddHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsUpdating(true);
@@ -186,12 +189,38 @@ const TodoList = () => {
       );
       if (status === 200) {
         onCloseAddModal();
+        toast.success('Adding Successfully!');
         setQueryKey((prev) => prev + 1);
       }
     } catch (error) {
       console.log(error);
     } finally {
       setIsUpdating(false);
+    }
+  };
+
+  // Generate Handler
+  const onGenerateTodo = async () => {
+    try {
+      for (let i = 0; i < 100; i++) {
+        await axiosInstance.post(
+          `/todos`,
+          {
+            data: {
+              title: faker.lorem.words(5),
+              description: faker.lorem.paragraph(2),
+              user: [userData.user.id],
+            },
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${userData.jwt}`,
+            },
+          }
+        );
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -252,7 +281,7 @@ const TodoList = () => {
   ));
 
   return (
-    <div className="space-y-1 ">
+    <div className="space-y-1 mb-5">
       <div className="flex items-center justify-between mb-16">
         <p className="text-[23px] font-semibold ">
           Your <span className="text-indigo-700 ml-[-5px]">Todos</span>
@@ -261,7 +290,9 @@ const TodoList = () => {
           <Button size={'sm'} onClick={onOpenAddModal}>
             Add New ToDo
           </Button>
-          <Button size={'sm'}>Generate Todo</Button>
+          <Button size={'sm'} variant={'outline'} onClick={onGenerateTodo}>
+            Generate Todo
+          </Button>
         </div>
       </div>
 
@@ -314,11 +345,11 @@ const TodoList = () => {
         closeModal={onCloseEditModal}
         title="Edit The Current Todo"
       >
-        <form className="space-y-3" onSubmit={onSubmitHandler}>
+        <form className="space-y-3" onSubmit={onSubmitEditHandler}>
           <div className="space-y-3">
             <Input
               value={todoToEdit.title}
-              onChange={onChangeHandler}
+              onChange={onChangeEditHandler}
               name="title"
               placeholder="Type Your Todo Title"
             />
@@ -329,7 +360,7 @@ const TodoList = () => {
           <div className="space-y-2">
             <Textarea
               value={todoToEdit.description}
-              onChange={onChangeHandler}
+              onChange={onChangeEditHandler}
               name="description"
               placeholder="Type Your Todo Description"
             />

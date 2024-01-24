@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:1336/api',
+  baseURL: 'https://threetared-fullstack-todo-app.onrender.com/api',
   timeout: 1000,
 });
 

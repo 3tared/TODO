@@ -35,6 +35,7 @@ const LoginPage = () => {
         '/auth/local',
         data
       );
+      console.log(status);
 
       if (status == 200) {
         toast.success(

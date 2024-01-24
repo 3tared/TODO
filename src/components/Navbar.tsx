@@ -15,7 +15,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="mx-3 max-w-3xl md:mx-auto mt-7 mb-20 bg-indigo-600 px-3 py-5 rounded-md">
+    <nav className="mx-3 max-w-3xl md:max-w-4xl md:mx-auto mt-7 mb-20 bg-indigo-600 px-3 py-5 rounded-md">
       <ul className="flex items-center justify-between">
         <li className="text-white duration-200 font-semibold text-lg">
           <NavLink to="/">Home</NavLink>
@@ -32,6 +32,14 @@ const Navbar = () => {
           </p>
         ) : (
           <div className="flex items-center space-x-4">
+            <li>
+              <NavLink
+                className="text-white duration-200 font-semibold text-lg"
+                to={'/todos'}
+              >
+                Todos
+              </NavLink>
+            </li>
             <li>
               <NavLink
                 className="text-white duration-200 font-semibold text-lg"
