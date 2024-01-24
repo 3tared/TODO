@@ -32,14 +32,14 @@ const Navbar = () => {
           </p>
         ) : (
           <div className="flex items-center space-x-4">
-            {/* <li>
+            <li>
               <NavLink
                 className="text-white duration-200 font-semibold text-lg"
                 to={'/todos'}
               >
                 Todos
               </NavLink>
-            </li> */}
+            </li>
             <li>
               <NavLink
                 className="text-white duration-200 font-semibold text-lg"
