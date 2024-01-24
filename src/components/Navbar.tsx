@@ -10,7 +10,7 @@ const Navbar = () => {
     localStorage.removeItem(userKey);
 
     setTimeout(() => {
-      location.reload();
+      location.replace('/');
     }, 1000);
   };
 
