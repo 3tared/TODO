@@ -25,3 +25,11 @@ export interface IAxiosErrorMessage {
     message?: string;
   };
 }
+
+export interface IUserInterface {
+  username: string;
+  id?: number;
+  email: string;
+  password: string;
+  createdAt?: string;
+}

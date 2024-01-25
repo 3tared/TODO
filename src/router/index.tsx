@@ -10,6 +10,7 @@ import ErrorHandler from '../components/errors/ErrorHandler';
 import HomePage from '../pages';
 import LoginPage from '../pages/Login';
 import RegisterPage from '../pages/Register';
+import Profile from '../pages/Profile';
 
 // import TodosPage from '../pages/Todos';
 
@@ -42,7 +43,7 @@ const router = createBrowserRouter(
               redirectPath="/login"
               data={userData}
             >
-              <h2>Profile Page</h2>
+              <Profile />
             </ProtectedRoute>
           }
         />
